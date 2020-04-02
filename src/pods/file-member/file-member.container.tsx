@@ -1,42 +1,43 @@
 import * as React from "react";
 import { FileCardMemberComponent } from "./file-member.component";
-import { getUser } from "common";
 import { useParams } from "react-router-dom";
-import { trackPromise } from "react-promise-tracker";
-import { UserContext } from "core";
+import { GlobalState, loadUser } from "core";
+import { UserEntity } from "model";
+import { connect } from "react-redux";
 
-const useLoadMember = () => {
-	const userContext = React.useContext(UserContext);
+interface Props {
+	user: UserEntity;
+	loadUser: (login: string) => void;
+}
 
-	const loadUser = (login: string) => {
-		console.log(login);
-		trackPromise(
-			getUser(login)
-				.then((user) => {
-					userContext.setUser([user]);
-					userContext.setMember(login);
-					userContext.setBooleanError(false);
-					return user;
-				})
-				.catch((error) => {
-					userContext.setMember(login);
-					userContext.setBooleanError(true);
-					userContext.setTxtError(error);
-					return error;
-				})
-		);
-	};
-	return { userContext, loadUser };
-};
-
-export const FileCardMemberContainer: React.FunctionComponent = () => {
+const InnerFileCardMemberContainer: React.FunctionComponent<Props> = (
+	props
+) => {
 	const { login } = useParams();
-	const { userContext, loadUser } = useLoadMember();
+	const { user, loadUser } = props;
 
 	React.useEffect(() => {
-		console.log(login);
 		loadUser(login);
 	}, [login]);
 
-	return <FileCardMemberComponent user={userContext.user} />;
+	return <FileCardMemberComponent user={[user]} />;
 };
+
+const mapStateToProps = (globalState: GlobalState) => {
+	return {
+		user: globalState.userReducer
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loadUser: (login) => {
+			dispatch(loadUser(login));
+		}
+	};
+};
+
+export const FileCardMemberContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(InnerFileCardMemberContainer);

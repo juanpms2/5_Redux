@@ -5,7 +5,7 @@ export interface MemberEntity {
 	company: string;
 }
 
-export const createDefaultMemberEntity = () => ({
+export const createDefaultMemberEntity = (): MemberEntity => ({
 	id: -1,
 	login: "",
 	avatar_url: "",

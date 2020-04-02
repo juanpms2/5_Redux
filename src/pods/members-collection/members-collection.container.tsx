@@ -1,43 +1,26 @@
 import * as React from "react";
 import { MembersCollectionComponent } from "./members-collection.component";
 import { useParams, useHistory } from "react-router-dom";
-import { getAllMembers } from "common";
-import { trackPromise } from "react-promise-tracker";
-import { MembersContext, linkRoutes } from "core";
+import { linkRoutes, GlobalState, loadMembers } from "core";
+import { connect } from "react-redux";
+import { MemberEntity } from "model";
 
-const useLoadMembers = () => {
-	const membersContext = React.useContext(MembersContext);
+interface Props {
+	members: MemberEntity[];
+	loadMembers: (organization: string) => void;
+}
 
-	const loadMembers = (organization) => {
-		trackPromise(
-			getAllMembers(organization)
-				.then((members) => {
-					membersContext.setMembers(members);
-					membersContext.setOrganization(organization);
-					membersContext.setBooleanError(false);
-					return members;
-				})
-				.catch((error) => {
-					membersContext.setOrganization(organization);
-					membersContext.setBooleanError(true);
-					membersContext.setTxtError(error);
-					return error;
-				})
-		);
-	};
-
-	return { membersContext, loadMembers };
-};
-
-export const MembersCollectionContainer: React.FunctionComponent = () => {
+const InnerMembersCollectionContainer: React.FunctionComponent<Props> = (
+	props
+) => {
+	const { members, loadMembers } = props;
 	const { organization } = useParams();
 	const history = useHistory();
-	const { membersContext, loadMembers } = useLoadMembers();
 	const [page, setPage] = React.useState(1);
 	const increment: number = 4;
 	const [init, setInit] = React.useState<number>(page);
 	const [fin, setFin] = React.useState<number>(init + increment);
-	const totalMembers: number = Math.round(membersContext.members.length / 4);
+	const totalMembers: number = Math.round(members.length / 4);
 
 	const loadMember = (value) => {
 		history.push(linkRoutes.fileMember(value));
@@ -47,7 +30,7 @@ export const MembersCollectionContainer: React.FunctionComponent = () => {
 		setInit(0);
 		setFin(increment);
 		setPage(1);
-		membersContext.members.slice(0, increment);
+		// members.slice(0, increment);
 	};
 
 	const handleChange = (event, value) => {
@@ -63,7 +46,7 @@ export const MembersCollectionContainer: React.FunctionComponent = () => {
 
 	return (
 		<MembersCollectionComponent
-			showMembers={membersContext.members.slice(init, fin)}
+			showMembers={members.slice(init, fin)}
 			totalMembers={totalMembers}
 			page={page}
 			handleChange={handleChange}
@@ -71,3 +54,22 @@ export const MembersCollectionContainer: React.FunctionComponent = () => {
 		/>
 	);
 };
+
+const mapStateToProps = (globalState: GlobalState) => {
+	return {
+		members: globalState.membersReducer
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loadMembers: (organization) => {
+			dispatch(loadMembers(organization));
+		}
+	};
+};
+
+export const MembersCollectionContainer = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(InnerMembersCollectionContainer);

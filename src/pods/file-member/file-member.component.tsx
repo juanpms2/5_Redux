@@ -16,6 +16,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import Link from "@material-ui/core/Link";
 import { UserEntity } from "model";
+import { CardActionArea } from "@material-ui/core";
 
 interface Props {
 	user: UserEntity[];
@@ -85,7 +86,11 @@ export const FileCardMemberComponent: React.FunctionComponent<Props> = (
 						className={classes.media}
 						image={dataUser.avatar_url}
 						title={dataUser.name ? dataUser.name : dataUser.login}
-					/>
+					>
+						<>
+							{/* añadimos este div fantasma para evitar un error en consola del componente CardMedia */}
+						</>
+					</CardMedia>
 					<CardContent>
 						<Typography variant="body2" color="textSecondary" component="p">
 							{dataUser.bio}

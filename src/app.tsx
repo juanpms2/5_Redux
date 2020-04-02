@@ -1,6 +1,6 @@
 import * as React from "react";
 import { HashRouter, Switch, Route } from "react-router-dom";
-import { Spinner, SimpleModal } from "common";
+import { Spinner, SimpleModalContainer } from "common";
 import { MemberProvider, UserProvider, switchRoutes } from "core";
 import { IndexScene, MembersScene, FileMemberScene } from "scenes";
 
@@ -10,7 +10,7 @@ export const App: React.FunctionComponent = () => {
 			<Spinner />
 
 			<MemberProvider>
-				<SimpleModal />
+				<SimpleModalContainer />
 				<HashRouter>
 					<Switch>
 						<Route

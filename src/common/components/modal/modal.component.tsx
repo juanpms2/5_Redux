@@ -1,7 +1,16 @@
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Modal from "@material-ui/core/Modal";
-import { MembersContext } from "core";
+import { connect } from "react-redux";
+// import { MembersContext } from "core";
+
+interface Props {
+	open: boolean;
+	txtError: string;
+	organization: string;
+	handleClose: () => void;
+	handleOpen: () => void;
+}
 
 function getModalStyle() {
 	const top = 50;
@@ -28,24 +37,11 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const SimpleModal = () => {
-	const membersContext = React.useContext(MembersContext);
+export const SimpleModalComponent: React.FunctionComponent<Props> = (props) => {
+	// const membersContext = React.useContext(MembersContext);
+	const { organization, open, txtError, handleClose, handleOpen } = props;
 	const [modalStyle] = React.useState(getModalStyle);
 	const classes = useStyles();
-	const [open, setOpen] = React.useState(membersContext.booleanError);
-
-	// Se ejecuta cada vez que cambia la propiedad y muestra el mensaje si el valor es true.
-	React.useEffect(() => {
-		setOpen(membersContext.booleanError);
-	}, [membersContext.booleanError]);
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
 
 	return (
 		<div>
@@ -57,9 +53,9 @@ export const SimpleModal = () => {
 			>
 				<div style={modalStyle} className={classes.paper}>
 					<h2 id="simple-modal-title" className={classes.error}>
-						Error: {membersContext.organization} no existe.
+						Error: {organization} no existe.
 					</h2>
-					<p id="simple-modal-description">{membersContext.txtError}</p>
+					<p id="simple-modal-description">{txtError}</p>
 					<button type="button" onClick={handleClose}>
 						Cerrar
 					</button>
