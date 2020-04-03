@@ -16,7 +16,6 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import Link from "@material-ui/core/Link";
 import { UserEntity } from "model";
-import { CardActionArea } from "@material-ui/core";
 
 interface Props {
 	user: UserEntity[];
@@ -29,25 +28,25 @@ const useStyles = makeStyles((theme: Theme) =>
 			minWidth: 350,
 			width: "100%",
 			border: "none",
-			boxShadow: "none"
+			boxShadow: "none",
 		},
 		media: {
 			height: 0,
-			paddingTop: "56.25%" // 16:9
+			paddingTop: "56.25%", // 16:9
 		},
 		expand: {
 			transform: "rotate(0deg)",
 			marginLeft: "auto",
 			transition: theme.transitions.create("transform", {
-				duration: theme.transitions.duration.shortest
-			})
+				duration: theme.transitions.duration.shortest,
+			}),
 		},
 		expandOpen: {
-			transform: "rotate(180deg)"
+			transform: "rotate(180deg)",
 		},
 		avatar: {
-			backgroundColor: "#24292E"
-		}
+			backgroundColor: "#24292E",
+		},
 	})
 );
 
@@ -116,7 +115,7 @@ export const FileCardMemberComponent: React.FunctionComponent<Props> = (
 						</IconButton>
 						<IconButton
 							className={clsx(classes.expand, {
-								[classes.expandOpen]: expanded
+								[classes.expandOpen]: expanded,
 							})}
 							onClick={handleExpandClick}
 							aria-expanded={expanded}

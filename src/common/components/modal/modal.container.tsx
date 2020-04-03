@@ -2,16 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { SimpleModalComponent } from "./modal.component";
 import { GlobalState } from "core";
+import { ErrorEntity } from "model";
+import { linkRoutes } from "core";
 
 interface Props {
-	booleanError: boolean;
-	txtError: string;
-	organization: string;
+	errorEntity: ErrorEntity;
 }
 
-const InnerSimpleModalContainer = (props) => {
-	const { organization, booleanError, txtError } = props;
-	const [open, setOpen] = React.useState(booleanError);
+const InnerSimpleModalContainer: React.FunctionComponent<Props> = (props) => {
+	const { errorEntity } = props;
+	const { booleanError, txtError, organization } = errorEntity;
+	const [open, setOpen] = React.useState(errorEntity.booleanError);
 
 	// Se ejecuta cada vez que cambia la propiedad y muestra el mensaje si el valor es true.
 	React.useEffect(() => {
@@ -24,28 +25,25 @@ const InnerSimpleModalContainer = (props) => {
 
 	const handleClose = () => {
 		setOpen(false);
+		location.href = linkRoutes.root;
 	};
 
 	return (
 		<SimpleModalComponent
-			open={open}
+			booleanError={open}
 			txtError={txtError}
 			organization={organization}
 			handleClose={handleClose}
-			handleOpen={handleOpen}
 		/>
 	);
 };
 
-const MapStateToProps = (globalState: GlobalState) => {
+const mapStateToProps = (globalState: GlobalState) => {
 	return {
-		error: globalState.errorReducer
+		errorEntity: globalState.errorReducer,
 	};
 };
 
-const MapDispatchToProps = () => {};
-
-export const SimpleModalContainer = connect(
-	MapStateToProps,
-	MapDispatchToProps
-)(InnerSimpleModalContainer);
+export const SimpleModalContainer = connect(mapStateToProps)(
+	InnerSimpleModalContainer
+);

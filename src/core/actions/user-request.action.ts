@@ -1,4 +1,4 @@
-import { UserEntity } from "model";
+import { UserEntity, ErrorEntity } from "model";
 import { actionsEnums } from "../actionsEnums";
 import { getUser } from "common";
 import { trackPromise } from "react-promise-tracker";
@@ -8,9 +8,34 @@ export const userRequest = (user: UserEntity) => ({
 	payload: user
 });
 
+export const errorRequestUser = (errorEntity: ErrorEntity) => ({
+	type: actionsEnums.ERROR_REQUEST,
+	payload: errorEntity
+});
+
 export const loadUser = (idLogin: string) => (dispatcher) => {
 	const promise = getUser(idLogin);
-	trackPromise(promise.then((data) => dispatcher(userRequest(data))));
+	const errorEntity: ErrorEntity = {
+		organization: "",
+		booleanError: false,
+		txtError: "",
+		nameLogin: idLogin
+	};
+	trackPromise(
+		promise
+			.then((user) => {
+				errorEntity.organization = user.company;
+				dispatcher(userRequest(user));
+				dispatcher(errorRequestUser(errorEntity));
+				return user;
+			})
+			.catch((error) => {
+				errorEntity.booleanError = true;
+				errorEntity.txtError = error;
+				dispatcher(errorRequestUser(errorEntity));
+				return error;
+			})
+	);
 
 	return promise;
 };

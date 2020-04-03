@@ -8,40 +8,38 @@ import { makeStyles, fade } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { linkRoutes } from "core";
-import { useHistory } from "react-router-dom";
-
-interface Props {}
+import { useHistory, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	backGround: {
-		backgroundColor: "#24292E"
+		backgroundColor: "#24292E",
 	},
 	menuButton: {
-		marginRight: theme.spacing(2)
+		marginRight: theme.spacing(2),
 	},
 	title: {
 		flexGrow: 1,
 		display: "none",
 		[theme.breakpoints.up("sm")]: {
-			display: "block"
-		}
+			display: "block",
+		},
 	},
 	search: {
 		position: "relative",
 		borderRadius: theme.shape.borderRadius,
 		backgroundColor: fade(theme.palette.common.white, 0.15),
 		"&:hover": {
-			backgroundColor: fade(theme.palette.common.white, 0.25)
+			backgroundColor: fade(theme.palette.common.white, 0.25),
 		},
 		marginLeft: 0,
 		width: "100%",
 		[theme.breakpoints.up("sm")]: {
 			marginLeft: theme.spacing(1),
-			width: "auto"
-		}
+			width: "auto",
+		},
 	},
 	searchIcon: {
 		width: theme.spacing(7),
@@ -50,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
 		pointerEvents: "none",
 		display: "flex",
 		alignItems: "center",
-		justifyContent: "center"
+		justifyContent: "center",
 	},
 	inputRoot: {
-		color: "inherit"
+		color: "inherit",
 	},
 	inputInput: {
 		padding: theme.spacing(1, 1, 1, 7),
@@ -62,20 +60,21 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up("sm")]: {
 			width: 120,
 			"&:focus": {
-				width: 200
-			}
-		}
-	}
+				width: 200,
+			},
+		},
+	},
 }));
 
-export const SearchAppBar = () => {
+export const SearchAppBar: React.FunctionComponent = () => {
 	const [company, setCompany] = React.useState("");
 	const history = useHistory();
+	const { organization } = useParams();
 	const classes = useStyles();
 
 	const sendForm = (e) => {
 		e.preventDefault();
-		history.push(linkRoutes.members(company));
+		organization !== company && history.push(linkRoutes.members(company));
 	};
 
 	return (
@@ -103,10 +102,10 @@ export const SearchAppBar = () => {
 								placeholder="Ej: lemoncode"
 								classes={{
 									root: classes.inputRoot,
-									input: classes.inputInput
+									input: classes.inputInput,
 								}}
 								inputProps={{
-									"aria-label": "search"
+									"aria-label": "search",
 								}}
 								type="text"
 								onChange={(e) => setCompany(e.target.value)}

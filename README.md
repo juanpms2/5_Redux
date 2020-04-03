@@ -1,16 +1,13 @@
-# 4.1 React Lab. GitHub Searcher
+# 5 Redux Thunk Lab. GitHub Searcher
 
 El ejercicio consiste en extender el ejemplo de mostrar los miembros de una organización que pertenece a Github.
 
-En el [ejemplo de partida](https://github.com/Lemoncode/react-excercise) está harcodeado "Lemoncode", lo que queremos es que el usuario pueda teclear cualquier organización (por ejemplo "Microsoft") y al pulsar en un botón se muestra la lista de miembros que pertenece a dicha compañia.
+Partimos del [ejercicio de React]("https://github.com/juanpms2/4_React_GitHub_Searcher). En este caso se implementará Redux thunk para conectar los datos con los componentes.
 
 Se amplia con lo siguiente:
 
-- Crear custom hooks para la carga de miembros.
-- Añadir React Promise tracker para mostrar un indicador de carga.
-- Añadir material ui.
-- Añadir paginación o scroll infinito.
-- Navegar a página de detalles de un miembro.
+- Implementar Redux thunk para la carga de integrantes de la organización.
+- Navegar a página de detalles de un miembro conectado con Redux thunk.
 
 ## Capturas de la aplicación
 

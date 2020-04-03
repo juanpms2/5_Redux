@@ -8,31 +8,32 @@ export const membersRequest = (members: MemberEntity[]) => ({
 	payload: members
 });
 
-export const errorRequest = (error: ErrorEntity) => ({
+export const errorRequestCompany = (errorEntity: ErrorEntity) => ({
 	type: actionsEnums.ERROR_REQUEST,
-	payload: error
+	payload: errorEntity
 });
 
 export const loadMembers = (organization) => (dispatcher) => {
 	const promise = getAllMembers(organization);
-	const error: ErrorEntity = {
+	const errorEntity: ErrorEntity = {
 		organization,
 		booleanError: false,
 		txtError: "",
 		nameLogin: ""
 	};
+
 	trackPromise(
 		promise
 			.then((members) => {
 				dispatcher(membersRequest(members));
-				dispatcher(errorRequest(error));
+				dispatcher(errorRequestCompany(errorEntity));
 				return members;
 			})
 			.catch((error) => {
-				error.booleanError = true;
-				error.txtError = error;
-				dispatcher(errorRequest(error));
-				return error;
+				errorEntity.booleanError = true;
+				errorEntity.txtError = error;
+				dispatcher(errorRequestCompany(errorEntity));
+				return errorEntity;
 			})
 	);
 

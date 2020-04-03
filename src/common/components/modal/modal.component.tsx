@@ -1,15 +1,12 @@
 import React from "react";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Modal from "@material-ui/core/Modal";
-import { connect } from "react-redux";
-// import { MembersContext } from "core";
 
 interface Props {
-	open: boolean;
+	booleanError: boolean;
 	txtError: string;
 	organization: string;
 	handleClose: () => void;
-	handleOpen: () => void;
 }
 
 function getModalStyle() {
@@ -19,7 +16,7 @@ function getModalStyle() {
 	return {
 		top: `${top}%`,
 		left: `${left}%`,
-		transform: `translate(-${top}%, -${left}%)`
+		transform: `translate(-${top}%, -${left}%)`,
 	};
 }
 
@@ -30,16 +27,15 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.background.paper,
 		border: "2px solid #000",
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2, 4, 3)
+		padding: theme.spacing(2, 4, 3),
 	},
 	error: {
-		color: "red"
-	}
+		color: "red",
+	},
 }));
 
 export const SimpleModalComponent: React.FunctionComponent<Props> = (props) => {
-	// const membersContext = React.useContext(MembersContext);
-	const { organization, open, txtError, handleClose, handleOpen } = props;
+	const { organization, booleanError, txtError, handleClose } = props;
 	const [modalStyle] = React.useState(getModalStyle);
 	const classes = useStyles();
 
@@ -48,7 +44,7 @@ export const SimpleModalComponent: React.FunctionComponent<Props> = (props) => {
 			<Modal
 				aria-labelledby="simple-modal-title"
 				aria-describedby="simple-modal-description"
-				open={open}
+				open={booleanError}
 				onClose={handleClose}
 			>
 				<div style={modalStyle} className={classes.paper}>

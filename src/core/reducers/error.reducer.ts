@@ -14,4 +14,5 @@ export const errorReducer = (
 	return state;
 };
 
-const handleErrorRequestAction = (state: ErrorState, error) => error;
+const handleErrorRequestAction = (state: ErrorState, errorEntity) =>
+	errorEntity;
