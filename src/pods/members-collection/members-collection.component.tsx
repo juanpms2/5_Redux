@@ -31,28 +31,28 @@ const useStyles = makeStyles((theme) => ({
 		width: "100%",
 		padding: "0 20px",
 		"& > * + *": {
-			marginTop: theme.spacing(2)
-		}
+			marginTop: theme.spacing(2),
+		},
 	},
 	paper: {
 		padding: theme.spacing(2),
 		textAlign: "center",
-		color: theme.palette.text.secondary
+		color: theme.palette.text.secondary,
 	},
 	pagination: {
-		margin: "30px auto"
+		margin: "30px auto",
 	},
 	carRoot: {
-		maxWidth: 345
+		maxWidth: 345,
 	},
 	media: {
-		height: 140
+		height: 140,
 	},
 	large: {
 		width: theme.spacing(18),
 		height: theme.spacing(18),
-		margin: "5% auto"
-	}
+		margin: "5% auto",
+	},
 }));
 
 export const MembersCollectionComponent: React.FunctionComponent<Props> = (
