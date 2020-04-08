@@ -1,5 +1,5 @@
 {
-	"name": "reactbysample",
+	"name": "redux-thunk",
 	"version": "1.0.0",
 	"description": "Ejercicio del módulo 5, Redux utilizando thunk. Buscador de miembros de una organización en GitHub.",
 	"main": "index.tsx",
